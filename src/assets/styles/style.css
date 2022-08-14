@@ -5,8 +5,23 @@ body {
   align-items: center;
 }
 
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #canvas1 {
-  border: 3px solid white;
   width: 800px;
   height: 700px;
+}
+
+#slider {
+  width: 100%;
+  margin: 0 0 4px 0;
+}
+
+p {
+  color: #eee;
+  margin-bottom: 0.3rem;
 }

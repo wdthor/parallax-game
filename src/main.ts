@@ -17,6 +17,16 @@ backgroundLayer4.src = 'src/assets/images/layer-4.png';
 const backgroundLayer5 = new Image();
 backgroundLayer5.src = 'src/assets/images/layer-5.png';
 
+const slider = document.querySelector<HTMLFormElement>('#slider')!;
+slider.value = gameSpeed;
+const showGameSpeed = document.querySelector('#show-game-speed')!;
+showGameSpeed.innerHTML = gameSpeed.toString();
+slider.addEventListener('change', e => {
+  const target = e.target as HTMLFormElement;
+  gameSpeed = target.value;
+  showGameSpeed.innerHTML = gameSpeed.toString();
+});
+
 class Layer {
   public x: number = 0;
   public y: number = 0;
