@@ -17,18 +17,54 @@ backgroundLayer4.src = 'src/assets/images/layer-4.png';
 const backgroundLayer5 = new Image();
 backgroundLayer5.src = 'src/assets/images/layer-5.png';
 
-let x = 0;
-let x2 = 2400;
+class Layer {
+  public x: number = 0;
+  public y: number = 0;
+  public width: number = 2400;
+  public height: number = 700;
+  public x2: number = this.width;
+  public speedModifier: number = 5;
+  public speed: number = gameSpeed * this.speedModifier;
+
+  constructor(public image: CanvasImageSource, speedModifier: number) {
+    this.speedModifier = speedModifier;
+  }
+
+  update() {
+    this.speed = gameSpeed * this.speedModifier;
+    if (this.x <= -this.width) {
+      this.x = this.width + this.x2 - this.speed;
+    }
+    if (this.x2 <= -this.width) {
+      this.x2 = this.width + this.x - this.speed;
+    }
+    this.x = Math.floor(this.x - this.speed);
+    this.x2 = Math.floor(this.x2 - this.speed);
+  }
+
+  draw() {
+    context.drawImage(this.image, this.x, this.y, this.width, this.height);
+    context.drawImage(this.image, this.x2, this.y, this.width, this.height);
+  }
+}
+
+const layer1 = new Layer(backgroundLayer1, 0.2);
+const layer2 = new Layer(backgroundLayer2, 0.4);
+const layer3 = new Layer(backgroundLayer3, 0.6);
+const layer4 = new Layer(backgroundLayer4, 0.8);
+const layer5 = new Layer(backgroundLayer5, 1);
+
+const gameLayers = [layer1, layer2, layer3, layer4, layer5];
+
 const animate = () => {
   // Clears the entire canvas after each frame
   context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  context.drawImage(backgroundLayer4, x, 0);
-  context.drawImage(backgroundLayer4, x2, 0);
   // Set endless background scroll looping between 2 copy of the same background
-  if (x < -2400) x = 2400;
-  else x -= gameSpeed;
-  if (x2 < -2400) x2 = 2400;
-  else x2 -= gameSpeed;
+  gameLayers.forEach(layer => {
+    layer.update();
+    layer.draw();
+  });
+
   requestAnimationFrame(animate);
 };
 
